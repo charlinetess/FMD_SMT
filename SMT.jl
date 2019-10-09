@@ -261,9 +261,6 @@ function STM(parameters,featuresexperiment,NameOfFile)
                                            # Store former position to be able to draw trajectory
                                            push!(historyX,currentposition[1]); 
                                            push!(historyY,currentposition[2]);
-                                           
-                                           ###  Compute reward ### 
-                                           re=reward(currentposition[1],currentposition[2],xp,yp,r); 
                                                 # compute new activity of pace cells :
                                            # actplacecell=place_activity(   position[1],position[2],Xplacecell,Yplacecell,σ); # this    function is wrong 
                                            actplacecell=placecells([currentposition[1],currentposition[2]],   parameters[:centres],parameters[:σPC]);
@@ -310,7 +307,9 @@ function STM(parameters,featuresexperiment,NameOfFile)
                                                    dir=[0 0]
                                                end
                                            end
-                                           prevdir=dir;                           
+                                           prevdir=dir;
+                                           ###  Compute reward ### 
+                                           re=reward(currentposition[1],currentposition[2],xp,yp,r);                            
                                            # compute new activity of pace cells :
                                            # actplacecell=place_activity(   position[1],position[2],Xplacecell,Yplacecell,σ);
                                            actplacecell=placecells([currentposition[1],currentposition[2]],   parameters[:centres],parameters[:σPC]);
