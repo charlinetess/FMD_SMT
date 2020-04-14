@@ -9,8 +9,19 @@ using Statistics
 using JLD2
 using FileIO
 
+using PyPlot
+
+
+widthplacecells=[0.1 0.3 0.4 0.5 0.98]*100;
+discountfactor=[0.1 0.4 0.6 0.9 0.7];
+
+
+for i=1:4
+for j=1:4
+	let widthplacecells=[0.05 0.1 0.2 0.7]*100,discountfactor=[0.1 0.4 0.6 0.9]
+
 # load data 
-rats=load("experimentestcheck.jld2");
+rats=load("experiment_$(widthplacecells[i])_$(discountfactor[j]).jld2");
 parameters=rats["parameters"];
 featuresexperiment=rats["features"];# contains the fields numberofdays numberoftrials and numberofrats
 data=rats["data"];
@@ -31,7 +42,8 @@ latencies=[mean([data[n][div(k+numberoftrials-1,numberoftrials)].day[rem(numbero
 
 
 
-using PyPlot
+
+clf()
 ioff()
 fig = figure("Test plot latencies",figsize=(9,9))
 #ax = fig[:add_subplot](1,1,1)
@@ -82,6 +94,14 @@ yhl = hl/(xmax-xmin)*(ymax-ymin)* width/height
 ax.arrow(xmin, ymin, xmax-xmin, 0.,length_includes_head= "True", fc="k", ec="k", lw = lw,head_width=hw, head_length=hl, overhang = ohg,  clip_on = "False") 
 
 ax.arrow(xmin, ymin, 0., ymax-ymin,length_includes_head= "True", fc="k", ec="k", lw = lw, head_width=yhw, head_length=yhl, overhang = ohg,  clip_on = "False")
+
+
+savefig("Latencies_$(parameters[:σPC])_$(parameters[:γ]).png")
+
+end # end let 
+end 
+
+end 
 
 #arrowed_spines(fig, ax)
 show()

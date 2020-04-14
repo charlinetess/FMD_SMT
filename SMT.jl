@@ -16,7 +16,7 @@ using Statistics
 using JLD2
 using FileIO
 
-cd("Documents/FosterDayanMorris/StandardMemoryTest/")
+#cd("Documents/FosterDayanMorris/StandardMemoryTest/")
 
 ###################################################################################
 ###################################################################################
@@ -83,8 +83,8 @@ end
 
 
 # Calculate reward as a function of position 
-function reward(x,y,xp,yp,r) # x,y position of the rat and xp,yp position of the platform, r radius of the platform
-    if (x-xp)^2+(y-yp)^2<= r^2 # if the rat is in the platform
+function reward(x,y,xp,yp,parameters) # x,y position of the rat and xp,yp position of the platform, r radius of the platform
+    if (x-xp)^2+(y-yp)^2<= parameters[:r]^2 # if the rat is in the platform
         R=parameters[:rewardgoal];
     else # else 
         R=0;
@@ -109,85 +109,6 @@ function indice(Acum,x) # x number, Acum vector
         
 end
 
-###################################################################################
-################################### PARAMETERS  ###################################
-###################################################################################
-
-# Creating the circle and the place cells:
-R= 100; # Radius of the circle in cm
-r=5;# Radius of the platform  in cm
-
-# Motion characteristic 
-dt=0.1; # timestep in s 
-speed=30; # speed of the rat in cm.s-1
-# Different possible directions 
-angles=[-3*pi/4, -2*pi/4, -pi/4, 0, pi/4, 2*pi/4, 3*pi/4, pi];
-
-
-# Trial characteristic :
-T=120; # maximal duration of a trial in seconds
-
-# Place cells 
-NPC=493; # number of place cells 
-#centres=sunflower(N,R,2);
-#Xplacecell=centres[:,1]; # absciss place cells  
-#Yplacecell=centres[:,2]; # y place cells 
-
-
-# Place cell : method used by Blake richards 
-# initialize the centres of the place cells by random unifrom sampling across the pool
-arguments= rand(1,NPC)*2*pi; # generate random angles 
-radii= sqrt.(rand(1,NPC))*R; # generate random radius 
-centres= [cos.(arguments).*radii; sin.(arguments).*radii];  # gather 
-
-σPC=0.30*100; # variability of place cell activity, in centimeters
-ampρPC=1;
-
-# Action cells : 
-NA=8; # number of action cells 
-
-
-# Potential positions of the platform : 
-Xplatform=[0.3,0,-0.3,0,0.5,-0.5,0.5,-0.5].*R; # in cm
-Yplatform=[0,0.3,0,-0.3,0.5,0.5,-0.5,-0.5].*R;# in cm
-
-# Potential Starting positions of the rat :
-Xstart=[0.95,0,-0.95,0].*R; # East, North, West, South
-Ystart=[0,0.95,0,-0.95].*R;
-
-# Define number of rats, number of days and numbers of trials per day
-global numberofdays, numberoftrials, numberofrats
-numberofdays=2;
-numberofrats=2;
-numberoftrials=2;
-
-global times
-times=collect(0:dt:T+dt); # time vector 
-
-
-# Parameter that regulate the choice between former angle and new angle 
-global momentum
-momentum=1.0;
-
-temperature=2; # in reality inverse temperature, if high more exploitation, low more exploration 
-# Learning variables : 
-global γ, actorLR, criticLR, criticLR
-γ=0.98; # Discount factor.  they dont precise the value  
-actorLR=0.1; # actor learning rate
-criticLR=0.01; # critic learning rate
-
-rewardgoal=1; # value of reward given when finding platform 
-
-#########################################################################
-#############        Create input     ###############  ######################
-#########################################################################
-
-
-parameters=Dict(:momentum=>momentum,:γ=>γ,:actorLR=>actorLR,:criticLR=>criticLR,:centres=>centres,:R=>R,:r=>r,:speed=>speed,:angles=>angles,:NPC=>NPC,:NA=>NA,:σPC=>σPC,:ampρPC=>ampρPC,:Xstart=>Xstart,:Ystart=>Ystart,:dt=>dt,:T=>T,:times=>times,:Xplatform=>Xplatform,:Yplatform=>Yplatform,:rewardgoal=>rewardgoal,:temperature=>temperature);
-
-featuresexperiment=Dict(:numberofrats=>numberofrats, :numberofdays=>numberofdays, :numberoftrials=>numberoftrials);
-
-NameOfFile="experimentestcheck.jld2";
 
 
 
@@ -202,8 +123,8 @@ function STM(parameters,featuresexperiment,NameOfFile)
         ##########  ##########  START EXPERIMENT  ##########  ##########  
             ##########  ##########  ##########  ##########   ########## 
             let currentexperiment, actorweights, criticweights # define scope of variables 
-               criticweights=zeros(NPC,1);
-               actorweights=zeros(NPC,NA);    
+               criticweights=zeros(parameters[:NPC],1);
+               actorweights=zeros(parameters[:NPC],parameters[:NA]);    
                currentexperiment=[];
                    for indexday=1:featuresexperiment[:numberofdays] # start experiment 
                        let indexplatform, xp, yp, currentday # start their scope 
@@ -226,7 +147,7 @@ function STM(parameters,featuresexperiment,NameOfFile)
                                #position=[Xstart[indexstart] Ystart[indexstart]];
                                
                                # start scope of variables: 
-                               let indexstart, positionstart, currentposition, re,k,t,historyX,historyY,    TDerrors,arg,timeout,prevdir
+                               let indexstart, positionstart, currentposition, re,k,t,historyX,historyY,    TDerrors,arg,timeout,prevdir,dir
                                    # Chose starting position :     
                                    indexstart=rand(1:4); # take indexstart-th starting position : chose     randomnly between 4 possibilities 1 East 2 North 3 West 4 South
                                    positionstart=[parameters[:Xstart][indexstart] parameters[:Ystart][indexstart]];
@@ -291,9 +212,9 @@ function STM(parameters,featuresexperiment,NameOfFile)
                                            indexaction=indice(SumPactioncell,x); # Chose which action     between the 8 possibilities
                                            argdecision=parameters[:angles][indexaction]; # compute the coreesponding     angle 
                                            newdir=[cos(argdecision) sin(argdecision)];
-                                           dir=(newdir./(1.0+momentum).+momentum.*prevdir./(1.0+momentum));     # smooth trajectory to avoid sharp angles
+                                           dir=(newdir./(1.0+parameters[:momentum]).+parameters[:momentum].*prevdir./(1.0+parameters[:momentum]));     # smooth trajectory to avoid sharp angles
                                                if !(norm(dir)==0)
-                                                   global dir
+                                                   #global dir
                                                    dir=dir./norm(dir); # normalize so we control the exact    speed of the rat
                                                end
                                            formerposition=currentposition;
@@ -309,7 +230,7 @@ function STM(parameters,featuresexperiment,NameOfFile)
                                            end
                                            prevdir=dir;
                                            ###  Compute reward ### 
-                                           re=reward(currentposition[1],currentposition[2],xp,yp,r);                            
+                                           re=reward(currentposition[1],currentposition[2],xp,yp,parameters);                            
                                            # compute new activity of pace cells :
                                            # actplacecell=place_activity(   position[1],position[2],Xplacecell,Yplacecell,σ);
                                            actplacecell=placecells([currentposition[1],currentposition[2]],   parameters[:centres],parameters[:σPC]);
@@ -375,5 +296,109 @@ function STM(parameters,featuresexperiment,NameOfFile)
 save(NameOfFile, "parameters",parameters,"features",featuresexperiment,"data",experiment);
 end # end function
 
+
+
+
+
+
+widthplacecells=[0.1 0.3 0.4 0.5 0.98];
+discountfactor=[0.1 0.4 0.6 0.9 0.7];
+
+for i=1:4
+for j=1:4
+	let parameters,featuresexperiment,NameOfFile, widthplacecells=[0.05 0.1 0.2 0.7], discountfactor=[0.1 0.4 0.6 0.9]
+###################################################################################
+################################### PARAMETERS  ###################################
+###################################################################################
+
+# Creating the circle and the place cells:
+R= 100; # Radius of the circle in cm
+r=5;# Radius of the platform  in cm
+
+# Motion characteristic 
+dt=0.1; # timestep in s 
+speed=30; # speed of the rat in cm.s-1
+# Different possible directions 
+angles=[-3*pi/4, -2*pi/4, -pi/4, 0, pi/4, 2*pi/4, 3*pi/4, pi];
+
+
+# Trial characteristic :
+T=120; # maximal duration of a trial in seconds
+
+# Place cells 
+NPC=493; # number of place cells 
+#centres=sunflower(N,R,2);
+#Xplacecell=centres[:,1]; # absciss place cells  
+#Yplacecell=centres[:,2]; # y place cells 
+
+
+# Place cell : method used by Blake richards 
+# initialize the centres of the place cells by random unifrom sampling across the pool
+arguments= rand(1,NPC)*2*pi; # generate random angles 
+radii= sqrt.(rand(1,NPC))*R; # generate random radius 
+centres= [cos.(arguments).*radii; sin.(arguments).*radii];  # gather 
+
+
+σPC=widthplacecells[j]*100;
+
+#σPC=0.30*100; # variability of place cell activity, in centimeters
+ampρPC=1;
+
+# Action cells : 
+NA=8; # number of action cells 
+
+
+# Potential positions of the platform : 
+Xplatform=[0.3,0,-0.3,0,0.5,-0.5,0.5,-0.5].*R; # in cm
+Yplatform=[0,0.3,0,-0.3,0.5,0.5,-0.5,-0.5].*R;# in cm
+
+# Potential Starting positions of the rat :
+Xstart=[0.95,0,-0.95,0].*R; # East, North, West, South
+Ystart=[0,0.95,0,-0.95].*R;
+
+# Define number of rats, number of days and numbers of trials per day
+#global numberofdays, numberoftrials, numberofrats
+numberofdays=2;
+numberofrats=30;
+numberoftrials=20;
+
+#global times
+times=collect(0:dt:T+dt); # time vector 
+
+
+# Parameter that regulate the choice between former angle and new angle 
+#global momentum
+momentum=1.0;
+
+temperature=2; # in reality inverse temperature, if high more exploitation, low more exploration 
+# Learning variables : 
+#global γ, actorLR, criticLR, criticLR
+γ=discountfactor[i];
+#γ=0.98; # Discount factor.  they dont precise the value  
+actorLR=0.1; # actor learning rate
+criticLR=0.01; # critic learning rate
+
+rewardgoal=1; # value of reward given when finding platform 
+
+#########################################################################
+#############        Create input     ###############  ######################
+#########################################################################
+
+
+parameters=Dict(:momentum=>momentum,:γ=>γ,:actorLR=>actorLR,:criticLR=>criticLR,:centres=>centres,:R=>R,:r=>r,:speed=>speed,:angles=>angles,:NPC=>NPC,:NA=>NA,:σPC=>σPC,:ampρPC=>ampρPC,:Xstart=>Xstart,:Ystart=>Ystart,:dt=>dt,:T=>T,:times=>times,:Xplatform=>Xplatform,:Yplatform=>Yplatform,:rewardgoal=>rewardgoal,:temperature=>temperature);
+featuresexperiment=Dict(:numberofrats=>numberofrats, :numberofdays=>numberofdays, :numberoftrials=>numberoftrials);
+
+
+
+
+
+NameOfFile="experiment_$(σPC)_$(γ).jld2";
+
+
+
 @time  STM(parameters,featuresexperiment,NameOfFile)
 
+end # end let 
+end # end loop over i 
+
+end # end loop over j 
