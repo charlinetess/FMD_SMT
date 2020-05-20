@@ -72,13 +72,12 @@ steps=2;
 # # initalize the value map variable
 # vbegin = zeros(length(x),length(x));
 # vend = zeros(length(x),length(x));
-
-widthplacecells=0.1 0.3 0.4 0.5]*100;
-discountfactor=[0.1 0.98];
+widthplacecells=[0.05]*100;
+discountfactor=[0.9];
 
 for l=1:length(widthplacecells)
 for k=1:length(discountfactor)
-    let widthplacecells=[0.1 0.3 0.5]*100,discountfactor=[0.1 0.98], vbegin,x,y,x2,y2,vend,Wbegin,Wend,R,r;
+    let widthplacecells=[0.70]*100,discountfactor=[0.9], vbegin,x,y,x2,y2,vend,Wbegin,Wend,R,r;
 
         # load data 
         rats=load("experiment_$(widthplacecells[l])_$(discountfactor[k]).jld2");
@@ -93,7 +92,7 @@ for k=1:length(discountfactor)
 
         r=parameters[:r]; # platform radius
         R=parameters[:R]; # maze radius 
-        theta=parameters[:angles];
+        theta=0:0.01:2*pi+0.01;
 
         x=[-R+(steps)*(k-1) for k=1:(2*R/steps+1)];
         y=zeros(1,length(x));
@@ -225,10 +224,11 @@ for k=1:length(discountfactor)
         ylabel("Y Position (cm)");
         title("After Learning")
         colorbar()
-        #ax=gca() 
+        ax=gca() 
         ax[:set_axis_off]()
         #gca()[:grid](false);
         #gca()[:view_init](20.0,0.0)
+
 
 
 # lets try this 

@@ -297,9 +297,13 @@ save(NameOfFile, "parameters",parameters,"features",featuresexperiment,"data",ex
 end # end function
 
 
+widthplacecells=[0.1 0.3 0.4 0.5];
+discountfactor=[0.1 0.98];
+
+
 for i=1:length(widthplacecells)
 for j=1:length(discountfactor)
-	let parameters,featuresexperiment,NameOfFile, widthplacecells=[0.1 0.4 0.6 0.9 0.7], discountfactor=[0.1 0.3 0.4 0.5 0.98]
+	let parameters,featuresexperiment,NameOfFile, widthplacecells=[0.1 0.3 0.4 0.5], discountfactor=[0.1 0.98]
 ###################################################################################
 ################################### PARAMETERS  ###################################
 ###################################################################################

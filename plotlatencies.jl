@@ -12,11 +12,12 @@ using FileIO
 using PyPlot
 
 
+discountfactor=[0.9]
+widthplacecells=[0.7]*100;
 
-
-for i=1:8
-for j=1:4
-	let widthplacecells=[0.1 0.3 0.5]*100,discountfactor=[0.1 0.98]
+for i=1:length(widthplacecells)
+for j=1:length(discountfactor)
+	let widthplacecells=[0.7]*100,discountfactor=[0.9]
 
 # load data 
 rats=load("experiment_$(widthplacecells[i])_$(discountfactor[j]).jld2");
@@ -31,7 +32,7 @@ R=parameters[:R]; # maze radius
 
 
 # Define number of rats, number of days and numbers of trials per day
-#numberofdays=featuresexperiment[:numberofdays];
+numberofdays=featuresexperiment[:numberofdays];
 numberofdays=1
 numberofrats=featuresexperiment[:numberofrats];
 numberoftrials=featuresexperiment[:numberoftrials]; 
