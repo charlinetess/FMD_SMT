@@ -73,12 +73,12 @@ steps=2;
 # vbegin = zeros(length(x),length(x));
 # vend = zeros(length(x),length(x));
 
-widthplacecells=[0.1 0.3 0.4 0.5 0.98];
-discountfactor=[0.1 0.4 0.6 0.9 0.7];
+widthplacecells=0.1 0.3 0.4 0.5]*100;
+discountfactor=[0.1 0.98];
 
 for l=1:length(widthplacecells)
 for k=1:length(discountfactor)
-    let widthplacecells=[0.1 0.3 0.4 0.5 0.98]*100, width=widthplacecells[l], discountfactor=[0.1 0.4 0.6 0.9 0.7], vbegin,x,y,x2,y2,vend,Wbegin,Wend,R,r;
+    let widthplacecells=[0.1 0.3 0.5]*100,discountfactor=[0.1 0.98], vbegin,x,y,x2,y2,vend,Wbegin,Wend,R,r;
 
         # load data 
         rats=load("experiment_$(widthplacecells[l])_$(discountfactor[k]).jld2");
@@ -184,33 +184,33 @@ for k=1:length(discountfactor)
         clf()
         ioff()
         # create the figure 
-        fig = figure("Value function",figsize=(6,12));
+        # fig = figure("Value function",figsize=(6,12));
         #suptitle("value map")
 
 
-        ax=subplot(211)
-        # show the value map
-        #s1 = surf(x,y,vbegin,cmap=ColorMap("jet"));
+        # ax=subplot(211)
+        # # show the value map
+        # #s1 = surf(x,y,vbegin,cmap=ColorMap("jet"));
 
-        pcolormesh(x,x,vbegin)#,cmap=homemadecoloragain)#,aspect_ratio=1)
-
-
-        # plot circle 
-        plot(R*cos.(theta),R*sin.(theta),ls="--",color=[169/255,169/255,169/255],zorder=1)
-        # plot platform
-        plot(data[indexrat][indexday].platformposition[1].+r*cos.(theta),data[indexrat][indexday].platformposition[2].+r*sin.(theta),color=[250/255,128/255,114/255],zorder=2)
+        # pcolormesh(x,x,vbegin)#,cmap=homemadecoloragain)#,aspect_ratio=1)
 
 
-
-        xlabel("X Position (cm)");
-        ylabel("Y Position (cm)");
-        title("Before Learning")
-        ax[:set_axis_off]()
-
-
-        ax=subplot(212)
+        # # plot circle 
+        # plot(R*cos.(theta),R*sin.(theta),ls="--",color=[169/255,169/255,169/255],zorder=1)
+        # # plot platform
+        # plot(data[indexrat][indexday].platformposition[1].+r*cos.(theta),data[indexrat][indexday].platformposition[2].+r*sin.(theta),color=[250/255,128/255,114/255],zorder=2)
 
 
+
+        # xlabel("X Position (cm)");
+        # ylabel("Y Position (cm)");
+        # title("Before Learning")
+        # ax[:set_axis_off]()
+
+
+        # ax=subplot(212)
+
+		fig = figure("Value function",figsize=(6,6));
         # plot circle 
         plot(R*cos.(theta),R*sin.(theta),ls="--",color=[169/255,169/255,169/255],zorder=1)
         # plot platform
@@ -240,6 +240,7 @@ cbar=fig[:colorbar]#(ax=axe,image)
 end # end scope variables 
 end 
 end 
+
 
 show()
 
