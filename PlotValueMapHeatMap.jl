@@ -77,7 +77,7 @@ discountfactor=[0.9];
 
 for l=1:length(widthplacecells)
 for k=1:length(discountfactor)
-    let widthplacecells=[0.70]*100,discountfactor=[0.9], vbegin,x,y,x2,y2,vend,Wbegin,Wend,R,r;
+    let widthplacecells=[0.4]*100,discountfactor=[0.1], vbegin,x,y,x2,y2,vend,Wbegin,Wend,R,r;
 
         # load data 
         rats=load("experiment_$(widthplacecells[l])_$(discountfactor[k]).jld2");
@@ -209,7 +209,7 @@ for k=1:length(discountfactor)
 
         # ax=subplot(212)
 
-		fig = figure("Value function",figsize=(6,6));
+		fig = figure("Value function")#,figsize=(6,6));
         # plot circle 
         plot(R*cos.(theta),R*sin.(theta),ls="--",color=[169/255,169/255,169/255],zorder=1)
         # plot platform
@@ -222,7 +222,7 @@ for k=1:length(discountfactor)
 
         xlabel("X Position (cm)");
         ylabel("Y Position (cm)");
-        title("After Learning")
+        #title("After Learning")
         colorbar()
         ax=gca() 
         ax[:set_axis_off]()

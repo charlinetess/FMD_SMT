@@ -17,7 +17,7 @@ widthplacecells=[0.4]*100;
 
 for i=1:length(widthplacecells)
 	for j=1:length(discountfactor)
-		let widthplacecells=[0.4]*100,discountfactor=[0.98]
+		let widthplacecells=[0.4]*100,discountfactor=[0.1]
 
 		# load data 
 		rats=load("experiment_$(widthplacecells[i])_$(discountfactor[j]).jld2");
@@ -33,7 +33,7 @@ for i=1:length(widthplacecells)
 
 		# Define number of rats, number of days and numbers of trials per day
 		numberofdays=featuresexperiment[:numberofdays];
-		numberofdays=2
+		numberofdays=1
 		numberofrats=featuresexperiment[:numberofrats];
 		numberoftrials=featuresexperiment[:numberoftrials]; 
 
@@ -105,7 +105,7 @@ for i=1:length(widthplacecells)
 
 		#labels = [item.get_text() for item in ax.get_xticklabels()]
 		#labels[1] = labels_code
-		labels_code=vcat("","",labels_code)
+		labels_code=vcat("",labels_code)
 		ax.set_xticklabels(labels_code)
 
 		SMALL_SIZE = 10
