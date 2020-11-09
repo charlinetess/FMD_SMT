@@ -297,13 +297,13 @@ save(NameOfFile, "parameters",parameters,"features",featuresexperiment,"data",ex
 end # end function
 
 
-widthplacecells=[0.1 0.3 0.4 0.5];
-discountfactor=[0.1 0.98];
+# widthplacecells=[0.1 0.3 0.4 0.5];
+# discountfactor=[0.1 0.98];
 
 
-for i=1:length(widthplacecells)
-for j=1:length(discountfactor)
-	let parameters,featuresexperiment,NameOfFile, widthplacecells=[0.1 0.3 0.4 0.5], discountfactor=[0.1 0.98]
+# for i=1:length(widthplacecells)
+# for j=1:length(discountfactor)
+# 	let parameters,featuresexperiment,NameOfFile, widthplacecells=[0.1 0.3 0.4 0.5], discountfactor=[0.1 0.98]
 ###################################################################################
 ################################### PARAMETERS  ###################################
 ###################################################################################
@@ -335,8 +335,9 @@ arguments= rand(1,NPC)*2*pi; # generate random angles
 radii= sqrt.(rand(1,NPC))*R; # generate random radius 
 centres= [cos.(arguments).*radii; sin.(arguments).*radii];  # gather 
 
-
-σPC=widthplacecells[i]*100;
+# widthplacecells=[0.1 0.3 0.4 0.5];
+# discountfactor=[0.1 0.98];
+σPC=0.3*100;
 
 #σPC=0.30*100; # variability of place cell activity, in centimeters
 ampρPC=1;
@@ -370,7 +371,9 @@ momentum=1.0;
 temperature=2; # in reality inverse temperature, if high more exploitation, low more exploration 
 # Learning variables : 
 #global γ, actorLR, criticLR, criticLR
-γ=discountfactor[j];
+# discountfactor=[0.1 0.98];
+
+γ=0.98;
 #γ=0.98; # Discount factor.  they dont precise the value  
 actorLR=0.1; # actor learning rate
 criticLR=0.01; # critic learning rate
@@ -395,7 +398,7 @@ NameOfFile="experiment_$(σPC)_$(γ).jld2";
 
 @time  STM(parameters,featuresexperiment,NameOfFile)
 
-end # end let 
-end # end loop over i 
+# end # end let 
+# end # end loop over i 
 
-end # end loop over j 
+# end # end loop over j 
