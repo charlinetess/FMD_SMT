@@ -1,7 +1,7 @@
 # load data 
 
 # go to folder 
-cd("Documents/FosterDayanMorris/StandardMemoryTest") # Define directory
+# cd("Documents/FosterDayanMorris/StandardMemoryTest") # Define directory
 
 # load every package 
 using LinearAlgebra
@@ -18,7 +18,7 @@ using PyPlot
 # 		let widthplacecells=[0.4]*100,discountfactor=[0.1]
 
 # load data 
-rats=load("experiment_SMT.jld2");
+rats=load("experiment_40.0_0.98.jld2");
 parameters=rats["parameters"];
 featuresexperiment=rats["features"];# contains the fields numberofdays numberoftrials and numberofrats
 data=rats["data"];
