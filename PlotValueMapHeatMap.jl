@@ -22,19 +22,17 @@ end
 # load data 
 
 # go to folder 
-cd("Documents/FosterDayanMorris/StandardMemoryTest") # Define directory
+# cd("Documents/FosterDayanMorris/StandardMemoryTest") # Define directory
 
 # load every package 
 using LinearAlgebra
 using Statistics
 using JLD2
 using FileIO
-
 using PyPlot
-
 # chose rat, trials and day 
 
-indexrat=1;
+indexrat=8;
 
 indextrial1=1;
 indextrial2=20;
@@ -135,7 +133,7 @@ for i = 1:length(x)
             # determine the place cell activity at this point
             F= placecells([x[i],y[j]],centres,width)       
             # determine the actor activity
-            vbegin[j,i] = 0;
+            vbegin[j,i] =  dot(Wbegin,F)[1];
             vend[j,i] = dot(Wend,F)[1];
         else
             vbegin[j,i] = NaN;
@@ -196,6 +194,9 @@ plot(data[indexrat][indexday].platformposition[1].+r*cos.(theta),data[indexrat][
 
 pcolormesh(x2,x2,vend)#,cmap=homemadecoloragain)#,aspect_ratio=1)
 
+# pcolormesh(x2,x2,vbegin,vmin=minimum(vend[findall(x->!isnan(x),vend)]),vmax=maximum(vend[findall(x->!isnan(x),vend)]))#,cmap=homemadecoloragain)#,aspect_ratio=1)
+
+
 #fig[:canvas][:draw]()
 
 xlabel("X Position (cm)");
@@ -213,7 +214,12 @@ ax[:set_axis_off]()
 cbar=fig[:colorbar]#(ax=axe,image)
 #cbar.ax.tick_params(labelsize=20) 
 
-savefig("Value.png")
+
+show()
+
+
+
+# savefig("Value.png")
 
 # end # end scope variables 
 # end 

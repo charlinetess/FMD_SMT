@@ -46,9 +46,9 @@ using JLD2
 using FileIO
 
 # chose rat, day and trial you want to plot for.  
-indexrat=1;
+indexrat=8;
 indextrial1=1;
-indextrial2=20;
+indextrial2=18;
 indexday=1;
 
 
@@ -97,11 +97,14 @@ vend = zeros(length(x),length(x));
 
 
 zbegin=data[indexrat][indexday].day[indextrial1].actionmap;
+zbegin=0*data[indexrat][indexday].day[indextrial1].actionmap;
+
 zend=data[indexrat][indexday].day[indextrial2].actionmap;
 
 
 centres=parameters[:centres];
 width=widthplacecells[l];
+width=parameters[:σPC];
 
 # for each place point in the grid, calculate the vector of preferred action direction
 for i = 1:length(x)
@@ -192,9 +195,11 @@ ioff()
 
 fig = figure("Action Map",figsize=(6,6));
         # plot circle 
-        plot(R*cos.(theta),R*sin.(theta),"k-")
-plot(data[indexrat][indexday].platformposition[1].+r*cos.(theta),data[indexrat][indexday].platformposition[2].+r*sin.(theta),"m-")
-quiver(x,y,uend,vend,color="b");
+        plot(R*cos.(theta),R*sin.(theta),color="darkgrey",lw=1)
+plot(data[indexrat][indexday].platformposition[1].+r*cos.(theta),data[indexrat][indexday].platformposition[2].+r*sin.(theta),color="slateblue")
+quiver(x,y,uend,vend,color="darkred");
+# quiver(x,y,ubegin,vbegin,color="darkred");
+
 xlabel("X Position (cm)");
 ylabel("Y Position (cm)");
 ax=gca() 
@@ -205,8 +210,12 @@ ax[:set_axis_off]()
 
 
 # lets try this 
-cbar=fig[:colorbar]#(ax=axe,image)
+# cbar=fig[:colorbar]#(ax=axe,image)
 #cbar.ax.tick_params(labelsize=20) 
+
+
+show()
+
 
         savefig("Action_$(parameters[:σPC])_$(parameters[:γ]).png")
 

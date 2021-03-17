@@ -1,6 +1,10 @@
 # load data 
 using JLD2
 using FileIO
+using PyPlot 
+using Statistics 
+
+using LaTeXStrings
 # rats=load("/Users/pmxct2/Documents/FosterDayanMorris/Sublime/experimentDMP.jld2");
 
 rats=load("experiment_40.0_0.98.jld2");
@@ -38,30 +42,18 @@ ioff()
 fig = figure("trajectory",figsize=(9,9))
 
 
+axbis = gca() 
 
-
-
-ax1 = gca() 
-# grid("on") # Create a grid on the axis
-#title("trial $(indextrial1)") # Give the most recent axis a title
-ax1[:set_ylim]([-101,101])
-ax1[:set_xlim]([-101,101])
+axbis[:set_ylim]([-101,101])
+axbis[:set_xlim]([-101,101])
 xlabel("X")
 ylabel("Y")
+plot(xmaze,ymaze,color="darkgrey",lw=1)
+plot(data[indexrat][indexday].platformposition[1].+xplat,data[indexrat][indexday].platformposition[2] .+ yplat,color="slateblue",lw=2)
+plot(data[indexrat][indexday].day[indextrial].trajectory[:,1],data[indexrat][indexday].day[indextrial].trajectory[:,2],color="darkslategray", lw=2)
+plot(data[indexrat][indexday].day[indextrial].trajectory[end,1],data[indexrat][indexday].day[indextrial].trajectory[end,2],"*",color="teal",markersize=12)
 
-
-# Plot place cells 
-#scatter(parameters[:centres][1,:],parameters[:centres][2,:],s=3)
-# plot platform
-plot(data[indexrat][indexday].platformposition[1].+xplat,data[indexrat][indexday].platformposition[2] .+ yplat,color="red")
-
-# Plot circle
-plot(xmaze,ymaze,color="mediumseagreen",lw=2)
-
-
-# Plot trajectory 
-plot(data[indexrat][indexday].day[indextrial].trajectory[:,1],data[indexrat][indexday].day[indextrial].trajectory[:,2],color="darkred", lw=2)
-ax1.set_axis_off()
+axbis.set_axis_off()
 
 show()
 
