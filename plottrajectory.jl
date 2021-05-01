@@ -25,7 +25,7 @@ indexrat=8;
 # chose Day
 indexday=1;
 # chose trial
-indextrial=1;
+indextrial=17;
 
 
 

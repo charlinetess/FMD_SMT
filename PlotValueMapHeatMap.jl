@@ -80,6 +80,8 @@ vbegin = zeros(length(x),length(x));
 vend = zeros(length(x),length(x));
 
 Wbegin=data[indexrat][indexday].day[indextrial1].valuemap;
+Wbegin=0*data[indexrat][indexday].day[indextrial1].valuemap;
+
 Wend=data[indexrat][indexday].day[indextrial2].valuemap;
 
 # if PCplast==0
@@ -192,9 +194,9 @@ plot(R*cos.(theta),R*sin.(theta),ls="--",color=[169/255,169/255,169/255],zorder=
 plot(data[indexrat][indexday].platformposition[1].+r*cos.(theta),data[indexrat][indexday].platformposition[2].+r*sin.(theta),color=[250/255,128/255,114/255],zorder=2)
 
 
-pcolormesh(x2,x2,vend)#,cmap=homemadecoloragain)#,aspect_ratio=1)
+# pcolormesh(x2,x2,vend)#,cmap=homemadecoloragain)#,aspect_ratio=1)
 
-# pcolormesh(x2,x2,vbegin,vmin=minimum(vend[findall(x->!isnan(x),vend)]),vmax=maximum(vend[findall(x->!isnan(x),vend)]))#,cmap=homemadecoloragain)#,aspect_ratio=1)
+pcolormesh(x2,x2,vbegin,vmin=minimum(vend[findall(x->!isnan(x),vend)]),vmax=maximum(vend[findall(x->!isnan(x),vend)]))#,cmap=homemadecoloragain)#,aspect_ratio=1)
 
 
 #fig[:canvas][:draw]()
