@@ -18,15 +18,18 @@ using FileIO
 
 #cd("Documents/FosterDayanMorris/StandardMemoryTest/")
 
-###################################################################################
-###################################################################################
-########################                                ###########################
-########################       DEFINE FUNCTIONS         ###########################
-########################                                ###########################
-########################                                ##########################
-########################                                ##########################
-###################################################################################
-###################################################################################
+
+#
+#       ,...                                      ,,
+#     .d' ""                               mm     db
+#     dM`                                  MM
+#    mMMmm`7MM  `7MM  `7MMpMMMb.  ,p6"bo mmMMmm `7MM  ,pW"Wq.`7MMpMMMb.  ,pP"Ybd
+#     MM    MM    MM    MM    MM 6M'  OO   MM     MM 6W'   `Wb MM    MM  8I   `"
+#     MM    MM    MM    MM    MM 8M        MM     MM 8M     M8 MM    MM  `YMMMa.
+#     MM    MM    MM    MM    MM YM.    ,  MM     MM YA.   ,A9 MM    MM  L.   I8
+#   .JMML.  `Mbod"YML..JMML  JMML.YMbmd'   `Mbmo.JMML.`Ybmd9'.JMML  JMML.M9mmmP'
+#
+#
 
 
 # generate place cell actibity uniformely distributed throughout the space
@@ -384,9 +387,10 @@ rewardgoal=1; # value of reward given when finding platform
 #############        Create input     ###############  ######################
 #########################################################################
 
+for σPC in [5.0 10.0 30.0 40.0 50.0 70.0]
 
-parameters=Dict(:momentum=>momentum,:γ=>γ,:actorLR=>actorLR,:criticLR=>criticLR,:centres=>centres,:R=>R,:r=>r,:speed=>speed,:angles=>angles,:NPC=>NPC,:NA=>NA,:σPC=>σPC,:ampρPC=>ampρPC,:Xstart=>Xstart,:Ystart=>Ystart,:dt=>dt,:T=>T,:times=>times,:Xplatform=>Xplatform,:Yplatform=>Yplatform,:rewardgoal=>rewardgoal,:temperature=>temperature);
-featuresexperiment=Dict(:numberofrats=>numberofrats, :numberofdays=>numberofdays, :numberoftrials=>numberoftrials);
+  parameters=Dict(:momentum=>momentum,:γ=>γ,:actorLR=>actorLR,:criticLR=>criticLR,:centres=>centres,:R=>R,:r=>r,:speed=>speed,:angles=>angles,:NPC=>NPC,:NA=>NA,:σPC=>σPC,:ampρPC=>ampρPC,:Xstart=>Xstart,:Ystart=>Ystart,:dt=>dt,:T=>T,:times=>times,:Xplatform=>Xplatform,:Yplatform=>Yplatform,:rewardgoal=>rewardgoal,:temperature=>temperature);
+  featuresexperiment=Dict(:numberofrats=>numberofrats, :numberofdays=>numberofdays, :numberoftrials=>numberoftrials);
 
 
 
@@ -397,6 +401,8 @@ NameOfFile="experiment_$(σPC)_$(γ).jld2";
 
 
 @time  STM(parameters,featuresexperiment,NameOfFile)
+
+end 
 
 # end # end let 
 # end # end loop over i 
